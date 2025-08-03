@@ -4,20 +4,22 @@ import jwt from 'jsonwebtoken';
 declare global {
   namespace Express {
     interface Request {
-      user?: any;
+      user?: { id: number; username: string };
     }
   }
 }
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).send('Access denied. No token provided.');
   }
 
+  const token = authHeader.split(' ')[1];
+
   try {
-    const decoded = jwt.verify(token, 'your_jwt_secret');
+    const decoded = jwt.verify(token, 'your_jwt_secret') as { id: number; username: string };
     req.user = decoded;
     next();
   } catch (ex) {

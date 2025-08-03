@@ -1,35 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../api';
 import { Form, Button, Container } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-const CreatePostPage = () => {
+const EditPostPage = () => {
+  const { id } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const { data } = await api.get(`/api/posts/${id}`);
+        setTitle(data.title);
+        setContent(data.content);
+      } catch (error) {
+        console.error('Не удалось загрузить запись для редактирования', error);
+        alert('Не удалось загрузить запись для редактирования');
+      }
+    };
+    fetchPost();
+  }, [id]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post(
-        '/api/posts',
+      await api.put(
+        `/api/posts/${id}`,
         { title, content }
       );
-      alert(t('createPostPage.successMessage'));
-      navigate('/');
+      alert(t('editPostPage.successMessage'));
+      navigate(`/posts/${id}`);
     } catch (error) {
-      alert(t('createPostPage.errorMessage'));
+      alert(t('editPostPage.errorMessage'));
     }
   };
 
   return (
     <Container>
-      <h2>{t('createPostPage.createPost')}</h2>
+      <h2>{t('editPostPage.editPost')}</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
-          <Form.Label>{t('createPostPage.title')}</Form.Label>
+          <Form.Label>{t('editPostPage.title')}</Form.Label>
           <Form.Control
             type="text"
             value={title}
@@ -38,7 +53,7 @@ const CreatePostPage = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>{t('createPostPage.content')}</Form.Label>
+          <Form.Label>{t('editPostPage.content')}</Form.Label>
           <Form.Control
             as="textarea"
             rows={5}
@@ -48,11 +63,11 @@ const CreatePostPage = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          {t('createPostPage.createButton')}
+          {t('editPostPage.saveChanges')}
         </Button>
       </Form>
     </Container>
   );
 };
 
-export default CreatePostPage;
+export default EditPostPage;

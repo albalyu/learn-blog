@@ -15,6 +15,9 @@ export class User {
   @Column('varchar')
   passwordHash!: string;
 
+  @Column('varchar', { nullable: true })
+  refreshToken!: string | null;
+
   @Column('varchar', { default: '/uploads/default-avatars/male-avatar-1.svg' })
   avatarUrl!: string;
 

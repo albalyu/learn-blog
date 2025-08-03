@@ -59,6 +59,17 @@
   },
   "postCard": {
     "author": "By",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this post?"
+  },
+  "editPostPage": {
+    "editPost": "Edit Post",
+    "title": "Title",
+    "content": "Content",
+    "saveChanges": "Save Changes",
+    "successMessage": "Post updated successfully!",
+    "errorMessage": "Failed to update post"
   }
 }

@@ -44,5 +44,35 @@ export const createPostRoutes = (dataSource: DataSource): Router => {
     res.status(201).json(post);
   });
 
+  // Update a post
+  router.put('/:id', authMiddleware, async (req, res) => {
+    const postId = parseInt(req.params.id);
+    const userId = req.user.id;
+    const { title, content } = req.body;
+
+    if (!title || title.trim() === '') {
+      return res.status(400).send('Заголовок не может быть пустым');
+    }
+    if (!content || content.trim() === '') {
+      return res.status(400).send('Содержание не может быть пустым');
+    }
+
+    const post = await postRepository.findOne({ where: { id: postId }, relations: ['author'] });
+
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+
+    if (post.author.id !== userId) {
+      return res.status(403).send('Forbidden: You are not the author of this post');
+    }
+
+    post.title = title;
+    post.content = content;
+
+    await postRepository.save(post);
+    res.json(post);
+  });
+
   return router;
 };

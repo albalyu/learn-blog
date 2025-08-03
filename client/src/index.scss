@@ -1,5 +1,70 @@
 // Custom SASS styles
 
+// Colors
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$background-light: #f8f9fa;
+$background-dark: #343a40;
+$text-dark: #212529;
+$text-light: #f8f9fa;
+$border-color: #dee2e6;
+
+// Typography
+$font-family-base: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-size-base: 1rem;
+$line-height-base: 1.5;
+
+// Spacing
+$spacer: 1rem;
+
+// Shadows
+$box-shadow-sm: 0 .125rem .25rem rgba(0,0,0,.075);
+$box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+$box-shadow-lg: 0 1rem 3rem rgba(0,0,0,.175);
+
+// Borders
+$border-radius: .25rem;
+$border-radius-lg: .3rem;
+$border-radius-sm: .2rem;
+
 body {
-  background-color: #f8f9fa;
+  background-color: $background-light;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $text-dark;
+}
+
+// Custom styles for Bootstrap components
+.navbar {
+  box-shadow: $box-shadow-sm;
+}
+
+.card {
+  border: none;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.container {
+  padding-top: $spacer * 2;
+  padding-bottom: $spacer * 2;
+}
+
+.form-control {
+  border-radius: $border-radius;
+}
+
+.btn {
+  border-radius: $border-radius;
+}
+
+.post-card-author-col {
+  max-width: 130px; // Fixed width for author column
+  flex: 0 0 auto; // Prevent flex-grow
 }

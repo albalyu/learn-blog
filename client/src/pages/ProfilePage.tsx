@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import { Container, Row, Col, Image, Button, Modal, Form } from 'react-bootstrap';
 import PostCard from '../components/PostCard';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const defaultAvatarPaths = [
   '/uploads/default-avatars/male-avatar-1.svg',
@@ -26,10 +27,11 @@ const ProfilePage: React.FC = () => {
 
   const fetchProfile = async () => {
     try {
-      const { data } = await axios.get(`/api/users/${id}`);
+      const { data } = await api.get(`/api/users/${id}`);
       setProfile(data);
     } catch (error) {
       console.error(t('profilePage.fetchError'), error);
+      toast.error(t('profilePage.fetchError'));
     }
   };
 
@@ -38,17 +40,17 @@ const ProfilePage: React.FC = () => {
   }, [id]);
 
   const handleAvatarSelect = async (avatarUrl: string) => {
-    const token = localStorage.getItem('token');
     try {
-      await axios.put(
+      await api.put(
         '/api/users/avatar',
-        { avatarUrl },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { avatarUrl }
       );
       setShowModal(false);
       fetchProfile(); // Refresh profile to show new avatar
+      toast.success(t('profilePage.updateSuccess'));
     } catch (error) {
       console.error(t('profilePage.updateError'), error);
+      toast.error(t('profilePage.updateError'));
     }
   };
 
@@ -58,18 +60,18 @@ const ProfilePage: React.FC = () => {
     const formData = new FormData();
     formData.append('avatar', file);
 
-    const token = localStorage.getItem('token');
     try {
-      const response = await axios.post('/api/users/avatar/upload', formData, {
+      const response = await api.post('/api/users/avatar/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
         },
       });
       setShowModal(false);
       fetchProfile();
+      toast.success(t('profilePage.uploadSuccess'));
     } catch (error) {
       console.error(t('profilePage.uploadError'), error);
+      toast.error(t('profilePage.uploadError'));
     }
   };
 

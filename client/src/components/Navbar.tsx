@@ -3,26 +3,39 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { jwtDecode } from 'jwt-decode';
 import { useTranslation } from 'react-i18next';
+import api from '../api';
 
 const AppNavbar: React.FC = () => {
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
   const [userId, setUserId] = useState(null);
   const { t } = useTranslation();
 
   useEffect(() => {
-    const currentToken = localStorage.getItem('token');
-    setToken(currentToken);
-    if (currentToken) {
-      const decoded: { id: number } = jwtDecode(currentToken);
-      setUserId(decoded.id);
+    const currentAccessToken = localStorage.getItem('accessToken');
+    setAccessToken(currentAccessToken);
+    if (currentAccessToken) {
+      try {
+        const decoded: { id: number } = jwtDecode(currentAccessToken);
+        setUserId(decoded.id);
+      } catch (error) {
+        console.error("Failed to decode token", error);
+        setUserId(null);
+      }
+    } else {
+      setUserId(null);
     }
 
     const handleStorageChange = () => {
-      const newT = localStorage.getItem('token');
-      setToken(newT);
-      if (newT) {
-        const decoded: { id: number } = jwtDecode(newT);
-        setUserId(decoded.id);
+      const newAccessToken = localStorage.getItem('accessToken');
+      setAccessToken(newAccessToken);
+      if (newAccessToken) {
+        try {
+          const decoded: { id: number } = jwtDecode(newAccessToken);
+          setUserId(decoded.id);
+        } catch (error) {
+          console.error("Failed to decode token", error);
+          setUserId(null);
+        }
       } else {
         setUserId(null);
       }
@@ -33,9 +46,18 @@ const AppNavbar: React.FC = () => {
     };
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
+  const handleLogout = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (refreshToken) {
+      try {
+        await api.post('/api/auth/logout', { refreshToken });
+      } catch (error) {
+        console.error('Logout failed', error);
+      }
+    }
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    setAccessToken(null);
     setUserId(null);
     window.dispatchEvent(new Event('storage'));
   };
@@ -52,14 +74,14 @@ const AppNavbar: React.FC = () => {
             <LinkContainer to="/">
               <Nav.Link>{t('navbar.home')}</Nav.Link>
             </LinkContainer>
-            {token && (
+            {accessToken && (
               <LinkContainer to="/create-post">
                 <Nav.Link>{t('navbar.createPost')}</Nav.Link>
               </LinkContainer>
             )}
           </Nav>
           <Nav>
-            {token ? (
+            {accessToken ? (
               <>
                 <LinkContainer to={`/profile/${userId}`}>
                   <Nav.Link>{t('navbar.myProfile')}</Nav.Link>
@@ -82,5 +104,6 @@ const AppNavbar: React.FC = () => {
     </Navbar>
   );
 };
+
 
 export default AppNavbar;

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -14,11 +15,11 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('/api/auth/register', { username, email, password });
-      alert(t('registerPage.successMessage'));
+      await api.post('/api/auth/register', { username, email, password });
+      toast.success(t('registerPage.successMessage'));
       navigate('/login');
     } catch (error) {
-      alert(t('registerPage.errorMessage'));
+      toast.error(t('registerPage.errorMessage'));
     }
   };
 

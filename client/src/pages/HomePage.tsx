@@ -15,6 +15,16 @@ const HomePage: React.FC = ({ currentUserId }) => {
 
   useEffect(() => {
     fetchPosts();
+
+    const handlePostUpdate = () => {
+      fetchPosts();
+    };
+
+    window.addEventListener('postUpdated', handlePostUpdate);
+
+    return () => {
+      window.removeEventListener('postUpdated', handlePostUpdate);
+    };
   }, []);
 
   return (

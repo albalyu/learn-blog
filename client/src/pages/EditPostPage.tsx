@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
+import { Form, Button, Container } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const EditPostPage = () => {
@@ -31,6 +34,7 @@ const EditPostPage = () => {
         { title, content }
       );
       toast.success(t('editPostPage.successMessage'));
+      window.dispatchEvent(new Event('postUpdated')); // Dispatch custom event
       navigate(`/posts/${id}`);
     } catch (error) {
       toast.error(t('editPostPage.errorMessage'));

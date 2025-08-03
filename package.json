@@ -1,0 +1,24 @@
+{
+  "name": "learn-proj",
+  "version": "1.0.0",
+  "description": "Это проект учебного блога.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/albalyu/learn-blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/albalyu/learn-blog/issues"
+  },
+  "homepage": "https://github.com/albalyu/learn-blog#readme",
+  "dependencies": {
+    "concurrently": "^9.2.0"
+  }
+}

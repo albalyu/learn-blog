@@ -23,6 +23,7 @@ const PostDetailsPage = () => {
     <Container>
       <h1>{post.title}</h1>
       <p className="text-muted">{t('postDetailsPage.author')}: {post.author.username}</p>
+      <p className="text-muted"><small>{new Date(post.createdAt).toLocaleDateString()} {new Date(post.createdAt).toLocaleTimeString()}</small></p>
       <div>{post.content}</div>
     </Container>
   );

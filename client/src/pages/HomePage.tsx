@@ -10,9 +10,9 @@ const HomePage: React.FC = ({ currentUserId }) => {
   const { t } = useTranslation();
 
   const fetchPosts = async () => {
-    let url = '/api/posts/public';
+    let url = '/api/posts';
     if (filterTag) {
-      url = `/api/posts/tags/${filterTag}`;
+      url = `/api/posts?tag=${filterTag}`;
     }
     const { data } = await api.get(url);
     setPosts(data);

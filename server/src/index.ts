@@ -7,7 +7,7 @@ import { AppDataSource } from './database';
 import { createAuthRoutes } from './routes/auth';
 import { createPostRoutes } from './routes/posts';
 import { createUserRoutes } from './routes/users';
-import { createCommentRoutes } from './routes/comments';
+import { createTagRoutes } from './routes/tags';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,12 +28,12 @@ const main = async () => {
     const authRoutes = createAuthRoutes(AppDataSource);
     const postRoutes = createPostRoutes(AppDataSource);
     const userRoutes = createUserRoutes(AppDataSource);
-    const commentRoutes = createCommentRoutes(AppDataSource);
+    const tagRoutes = createTagRoutes(AppDataSource);
 
-    app.use('/api', authRoutes);
-    app.use('/api', postRoutes);
-    app.use('/api', userRoutes);
-    app.use('/api', commentRoutes);
+    app.use('/api/auth', authRoutes);
+    app.use('/api/posts', postRoutes);
+    app.use('/api/users', userRoutes);
+    app.use('/api/tags', tagRoutes);
 
     app.get('/api', (req, res) => {
       res.json({ message: 'Backend is running!' });

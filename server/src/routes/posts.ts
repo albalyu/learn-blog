@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { DataSource, In } from 'typeorm';
+import { DataSource, In, Like } from 'typeorm';
 import { Post } from '../entities/Post';
 import { User } from '../entities/User';
 import { Tag } from '../entities/Tag';
+import { Comment } from '../entities/Comment';
 import { authMiddleware } from '../middleware/auth';
 
 export const createPostRoutes = (dataSource: DataSource): Router => {
@@ -10,6 +11,7 @@ export const createPostRoutes = (dataSource: DataSource): Router => {
   const postRepository = dataSource.getRepository(Post);
   const userRepository = dataSource.getRepository(User);
   const tagRepository = dataSource.getRepository(Tag);
+  const commentRepository = dataSource.getRepository(Comment);
 
   // Helper function to find or create tags
   const findOrCreateTags = async (tagNames: string[]): Promise<Tag[]> => {
@@ -25,14 +27,27 @@ export const createPostRoutes = (dataSource: DataSource): Router => {
     return tags;
   };
 
-  // Get all public posts
-  router.get('/posts/public', async (req, res) => {
-    const posts = await postRepository.find({ relations: ['author', 'tags'] });
+  // Get all posts (public, with optional tag filter)
+  router.get('/', async (req, res) => {
+    const { tag } = req.query;
+    let posts;
+
+    if (tag) {
+      // Find posts by tag
+      const foundTag = await tagRepository.findOne({ where: { name: String(tag).toLowerCase() }, relations: ['posts', 'posts.author', 'posts.tags'] });
+      if (!foundTag) {
+        return res.json([]); // Return empty array if tag not found
+      }
+      posts = foundTag.posts;
+    } else {
+      // Get all public posts
+      posts = await postRepository.find({ relations: ['author', 'tags'] });
+    }
     res.json(posts);
   });
 
   // Get single post by id
-  router.get('/posts/:id', async (req, res) => {
+  router.get('/:id', async (req, res) => {
     const post = await postRepository.findOne({ where: { id: parseInt(req.params.id) }, relations: ['author', 'tags'] });
     if (!post) {
       return res.status(404).send('Post not found');
@@ -41,7 +56,7 @@ export const createPostRoutes = (dataSource: DataSource): Router => {
   });
 
   // Create a new post
-  router.post('/posts', authMiddleware, async (req, res) => {
+  router.post('/', authMiddleware, async (req, res) => {
     const { title, content, tags: tagNames = [] } = req.body;
     const userId = req.user.id;
 
@@ -64,7 +79,7 @@ export const createPostRoutes = (dataSource: DataSource): Router => {
   });
 
   // Update a post
-  router.put('/posts/:id', authMiddleware, async (req, res) => {
+  router.put('/:id', authMiddleware, async (req, res) => {
     const postId = parseInt(req.params.id);
     const userId = req.user.id;
     const { title, content, tags: tagNames = [] } = req.body;
@@ -97,7 +112,7 @@ export const createPostRoutes = (dataSource: DataSource): Router => {
   });
 
   // Delete a post
-  router.delete('/posts/:id', authMiddleware, async (req, res) => {
+  router.delete('/:id', authMiddleware, async (req, res) => {
     const postId = parseInt(req.params.id);
     const userId = req.user.id;
 
@@ -115,15 +130,42 @@ export const createPostRoutes = (dataSource: DataSource): Router => {
     res.status(204).send(); // No content
   });
 
-  // Get posts by tag
-  router.get('/posts/tags/:tagName', async (req, res) => {
-    const tagName = req.params.tagName.toLowerCase();
-    const tag = await tagRepository.findOne({ where: { name: tagName }, relations: ['posts', 'posts.author', 'posts.tags'] });
+  // Get comments for a specific post
+  router.get('/:postId/comments', async (req, res) => {
+    const postId = parseInt(req.params.postId);
+    const comments = await commentRepository.find({
+      where: { post: { id: postId } },
+      relations: ['author'],
+      order: { createdAt: 'ASC' },
+    });
+    res.json(comments);
+  });
 
-    if (!tag) {
-      return res.status(404).send('Tag not found');
+  // Add a comment to a post
+  router.post('/:postId/comments', authMiddleware, async (req, res) => {
+    const postId = parseInt(req.params.postId);
+    const userId = req.user.id;
+    const { content } = req.body;
+
+    if (!content || content.trim() === '') {
+      return res.status(400).send('Содержание комментария не может быть пустым');
     }
-    res.json(tag.posts);
+
+    const author = await userRepository.findOne({ where: { id: userId } });
+    const post = await postRepository.findOne({ where: { id: postId } });
+
+    if (!author || !post) {
+      return res.status(404).send('Автор или запись не найдены');
+    }
+
+    const comment = commentRepository.create({
+      content,
+      author,
+      post,
+    });
+
+    await commentRepository.save(comment);
+    res.status(201).json(comment);
   });
 
   return router;

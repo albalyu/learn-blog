@@ -42,7 +42,7 @@ const ProfilePage: React.FC = () => {
   const handleAvatarSelect = async (avatarUrl: string) => {
     try {
       await api.put(
-        '/api/users/avatar',
+        '/api/users/me/avatar',
         { avatarUrl }
       );
       setShowModal(false);
@@ -61,7 +61,7 @@ const ProfilePage: React.FC = () => {
     formData.append('avatar', file);
 
     try {
-      const response = await api.post('/api/users/avatar/upload', formData, {
+      const response = await api.post('/api/users/me/avatar/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

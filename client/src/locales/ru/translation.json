@@ -79,5 +79,11 @@
   "common": {
     "cancel": "Отмена",
     "confirm": "Подтвердить"
+  },
+  "commentForm": {
+    "placeholder": "Напишите комментарий...",
+    "submitButton": "Отправить",
+    "successMessage": "Комментарий успешно добавлен!",
+    "errorMessage": "Не удалось добавить комментарий"
   }
 }

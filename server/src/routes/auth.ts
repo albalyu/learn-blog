@@ -80,7 +80,7 @@ export const createAuthRoutes = (dataSource: DataSource): Router => {
     }
 
     const newAccessToken = jwt.sign({ id: user.id, username: user.username }, 'your_jwt_secret', {
-      expiresIn: '15m',
+      expiresIn: '10s', // Access token expires in 10 seconds for testing
     });
 
     const newRefreshToken = crypto.randomBytes(64).toString('hex');

@@ -6,20 +6,31 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ConfirmationModal from '../components/ConfirmationModal';
+import CommentList from '../components/CommentList';
+import CommentForm from '../components/CommentForm';
 
 const PostDetailsPage = ({ currentUserId }) => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
+  const [comments, setComments] = useState([]);
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
+  const fetchPostAndComments = async () => {
+    try {
+      const { data: postData } = await api.get(`/api/posts/${id}`);
+      setPost(postData);
+      const { data: commentsData } = await api.get(`/api/posts/${id}/comments`);
+      setComments(commentsData);
+    } catch (error) {
+      console.error('Failed to fetch post or comments', error);
+      toast.error('Не удалось загрузить запись или комментарии');
+    }
+  };
+
   useEffect(() => {
-    const fetchPost = async () => {
-      const { data } = await api.get(`/api/posts/${id}`);
-      setPost(data);
-    };
-    fetchPost();
+    fetchPostAndComments();
   }, [id]);
 
   const isAuthor = currentUserId === post?.author?.id;
@@ -36,6 +47,16 @@ const PostDetailsPage = ({ currentUserId }) => {
       navigate('/'); // Redirect to home page after deletion
     } catch (error) {
       toast.error(t('postCard.deleteError'));
+    }
+  };
+
+  const handleAddComment = async (content: string) => {
+    try {
+      await api.post(`/api/posts/${id}/comments`, { content });
+      toast.success(t('commentForm.successMessage'));
+      fetchPostAndComments(); // Refresh comments
+    } catch (error) {
+      toast.error(t('commentForm.errorMessage'));
     }
   };
 
@@ -72,6 +93,11 @@ const PostDetailsPage = ({ currentUserId }) => {
             </Row>
           </Card.Body>
         </Card>
+
+        <h3 className="mt-4">Комментарии</h3>
+        <CommentList comments={comments} />
+        {currentUserId && <CommentForm onSubmit={handleAddComment} />}
+
       </Container>
 
       <ConfirmationModal

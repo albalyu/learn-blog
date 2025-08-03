@@ -79,5 +79,11 @@
   "common": {
     "cancel": "Cancel",
     "confirm": "Confirm"
+  },
+  "commentForm": {
+    "placeholder": "Write a comment...",
+    "submitButton": "Submit",
+    "successMessage": "Comment added successfully!",
+    "errorMessage": "Failed to add comment"
   }
 }

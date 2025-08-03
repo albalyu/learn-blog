@@ -40,8 +40,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, currentUserId, onDeleteSucces
         <Card.Body>
           <Row>
             <Col xs={12} md="auto" className="text-center border-end post-card-author-col">
-              <Image src={post.author?.avatarUrl} roundedCircle width={60} height={60} className="mb-2" />
-              <div className="fw-bold">{post.author?.username || t('postCard.unknown')}</div>
+              {post.author && (
+                <Link to={`/profile/${post.author.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <Image src={post.author.avatarUrl} roundedCircle width={60} height={60} className="mb-2" />
+                  <div className="fw-bold">{post.author.username || t('postCard.unknown')}</div>
+                </Link>
+              )}
               <small className="text-muted">{new Date(post.createdAt).toLocaleDateString()} {new Date(post.createdAt).toLocaleTimeString()}</small>
             </Col>
             <Col xs={12} md={true} className="d-flex flex-column">

@@ -2,7 +2,9 @@
   "homePage": {
     "latestPosts": "Latest Posts",
     "welcomeTitle": "Welcome to our blog!",
-    "welcomeText": "A place where we share thoughts."
+    "welcomeText": "A place where we share thoughts.",
+    "filterByTag": "Filter by Tag",
+    "filterTagPlaceholder": "Enter tag"
   },
   "createPostPage": {
     "createPost": "Create New Post",
@@ -10,7 +12,10 @@
     "content": "Content",
     "createButton": "Create Post",
     "successMessage": "Post created successfully!",
-    "errorMessage": "Failed to create post"
+    "errorMessage": "Failed to create post",
+    "tags": "Tags",
+    "tagsPlaceholder": "Enter tags separated by commas",
+    "tagsHint": "Separate tags with commas"
   },
   "loginPage": {
     "login": "Login",
@@ -74,7 +79,10 @@
     "content": "Content",
     "saveChanges": "Save Changes",
     "successMessage": "Post updated successfully!",
-    "errorMessage": "Failed to update post"
+    "errorMessage": "Failed to update post",
+    "tags": "Tags",
+    "tagsPlaceholder": "Enter tags separated by commas",
+    "tagsHint": "Separate tags with commas"
   },
   "common": {
     "cancel": "Cancel",

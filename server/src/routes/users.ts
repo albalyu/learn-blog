@@ -37,7 +37,7 @@ export const createUserRoutes = (dataSource: DataSource): Router => {
   });
 
   // Update avatar from default list
-  router.put('/avatar', authMiddleware, async (req, res) => {
+  router.put('/me/avatar', authMiddleware, async (req, res) => {
     const { avatarUrl } = req.body;
     const userId = req.user.id;
 
@@ -50,7 +50,7 @@ export const createUserRoutes = (dataSource: DataSource): Router => {
   });
 
   // Upload custom avatar
-  router.post('/avatar/upload', [authMiddleware, upload.single('avatar')], async (req, res) => {
+  router.post('/me/avatar/upload', [authMiddleware, upload.single('avatar')], async (req, res) => {
     if (!req.file) {
       return res.status(400).send('No file uploaded.');
     }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Post } from './Post';
 import { Comment } from './Comment';
 
@@ -27,4 +27,15 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.author)
   comments!: Comment[];
+
+  @ManyToMany(() => User, (user) => user.subscribers)
+  @JoinTable({
+    name: 'user_subscriptions',
+    joinColumn: { name: 'followerId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'followingId', referencedColumnName: 'id' },
+  })
+  following!: User[];
+
+  @ManyToMany(() => User, (user) => user.following)
+  subscribers!: User[];
 }

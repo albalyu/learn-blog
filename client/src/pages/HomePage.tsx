@@ -3,9 +3,14 @@ import api from '../api';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import PostCard from '../components/PostCard';
 import { useTranslation } from 'react-i18next';
+import type { IPost } from '../types';
 
-const HomePage: React.FC = ({ currentUserId }) => {
-  const [posts, setPosts] = useState([]);
+interface HomePageProps {
+  currentUserId: number | null;
+}
+
+const HomePage: React.FC<HomePageProps> = ({ currentUserId }) => {
+  const [posts, setPosts] = useState<IPost[]>([]);
   const [filterTag, setFilterTag] = useState('');
   const { t } = useTranslation();
 
@@ -14,7 +19,7 @@ const HomePage: React.FC = ({ currentUserId }) => {
     if (filterTag) {
       url = `/api/posts?tag=${filterTag}`;
     }
-    const { data } = await api.get(url);
+    const { data } = await api.get<IPost[]>(url);
     setPosts(data);
   };
 
@@ -30,7 +35,7 @@ const HomePage: React.FC = ({ currentUserId }) => {
     return () => {
       window.removeEventListener('postUpdated', handlePostUpdate);
     };
-  }, [filterTag]); // Re-fetch when filterTag changes
+  }, [filterTag]);
 
   return (
     <Container>

@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-const CommentForm = ({ onSubmit }) => {
+interface CommentFormProps {
+  onSubmit: (content: string) => void;
+}
+
+const CommentForm: React.FC<CommentFormProps> = ({ onSubmit }) => {
   const [content, setContent] = useState('');
   const { t } = useTranslation();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(content);
     setContent('');

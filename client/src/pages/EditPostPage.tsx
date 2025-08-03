@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../api';
 import { Form, Button, Container } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import type { IPost, ITag } from '../types';
 
-const EditPostPage = () => {
+const EditPostPage: React.FC = () => {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -16,10 +17,10 @@ const EditPostPage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const { data } = await api.get(`/api/posts/${id}`);
+        const { data } = await api.get<IPost>(`/api/posts/${id}`);
         setTitle(data.title);
         setContent(data.content);
-        setTags(data.tags.map(tag => tag.name).join(', ')); // Set tags from fetched data
+        setTags(data.tags?.map((tag: ITag) => tag.name).join(', ') || ''); // Set tags from fetched data
       } catch (error) {
         console.error('Не удалось загрузить запись для редактирования', error);
         toast.error('Не удалось загрузить запись для редактирования');
@@ -28,7 +29,7 @@ const EditPostPage = () => {
     fetchPost();
   }, [id]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
     try {

@@ -53,4 +53,10 @@ api.interceptors.response.use(
   }
 );
 
+export const subscribeToUser = (userId: number) => api.post(`/api/users/${userId}/subscribe`);
+export const unsubscribeFromUser = (userId: number) => api.delete(`/api/users/${userId}/subscribe`);
+export const getFollowing = (userId: number) => api.get(`/api/users/${userId}/following`);
+export const getFollowers = (userId: number) => api.get(`/api/users/${userId}/followers`);
+export const getFollowingPosts = () => api.get('/api/posts/following');
+
 export default api;

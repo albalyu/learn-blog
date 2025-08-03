@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api';
 import { Container, Row, Col, Image, Button, Modal, Form } from 'react-bootstrap';
 import PostCard from '../components/PostCard';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import type { IUser, IPost } from '../types';
+import { jwtDecode } from 'jwt-decode';
 
 const defaultAvatarPaths = [
   '/uploads/default-avatars/male-avatar-1.svg',
@@ -21,13 +23,27 @@ const defaultAvatarPaths = [
 
 const ProfilePage: React.FC = () => {
   const { id } = useParams();
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<IUser | null>(null);
   const [showModal, setShowModal] = useState(false);
   const { t } = useTranslation();
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      try {
+        const decoded: { id: number } = jwtDecode(token);
+        setCurrentUserId(decoded.id);
+      } catch (error) {
+        console.error("Failed to decode token", error);
+        setCurrentUserId(null);
+      }
+    }
+  }, []);
 
   const fetchProfile = async () => {
     try {
-      const { data } = await api.get(`/api/users/${id}`);
+      const { data } = await api.get<IUser>(`/api/users/${id}`);
       setProfile(data);
     } catch (error) {
       console.error(t('profilePage.fetchError'), error);
@@ -61,7 +77,7 @@ const ProfilePage: React.FC = () => {
     formData.append('avatar', file);
 
     try {
-      const response = await api.post('/api/users/me/avatar/upload', formData, {
+      await api.post('/api/users/me/avatar/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -93,7 +109,7 @@ const ProfilePage: React.FC = () => {
         <hr />
         <h2>{t('profilePage.postsBy')} {profile.username}</h2>
         {profile.posts && profile.posts.length > 0 ? (
-          profile.posts.map((post) => <PostCard key={post.id} post={post} />)
+          profile.posts.map((post: IPost) => <PostCard key={post.id} post={post} currentUserId={currentUserId} onDeleteSuccess={fetchProfile} />)
         ) : (
           <p>{t('profilePage.noPosts')}</p>
         )}

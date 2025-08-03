@@ -46,6 +46,30 @@ export const createPostRoutes = (dataSource: DataSource): Router => {
     res.json(posts);
   });
 
+  // Get posts from followed users
+  router.get('/following', authMiddleware, async (req, res) => {
+    const userId = req.user.id;
+    const user = await userRepository.findOne({ where: { id: userId }, relations: ['following'] });
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    const followedUserIds = user.following.map(followedUser => followedUser.id);
+
+    if (followedUserIds.length === 0) {
+      return res.json([]); // No followed users, return empty array
+    }
+
+    const posts = await postRepository.find({
+      where: { author: { id: In(followedUserIds) } },
+      relations: ['author', 'tags'],
+      order: { createdAt: 'DESC' },
+    });
+
+    res.json(posts);
+  });
+
   // Get single post by id
   router.get('/:id', async (req, res) => {
     const post = await postRepository.findOne({ where: { id: parseInt(req.params.id) }, relations: ['author', 'tags'] });

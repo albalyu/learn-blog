@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import api from '../api';
 import { Form, Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-const CreatePostPage = () => {
+const CreatePostPage: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState(''); // New state for tags
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
     try {

@@ -65,5 +65,72 @@ export const createUserRoutes = (dataSource: DataSource): Router => {
     }
   });
 
+  // Subscribe to a user
+  router.post('/:id/subscribe', authMiddleware, async (req, res) => {
+    const userIdToSubscribe = parseInt(req.params.id);
+    const currentUserId = req.user.id;
+
+    if (userIdToSubscribe === currentUserId) {
+      return res.status(400).send('Cannot subscribe to yourself');
+    }
+
+    const userToSubscribe = await userRepository.findOne({ where: { id: userIdToSubscribe }, relations: ['subscribers'] });
+    const currentUser = await userRepository.findOne({ where: { id: currentUserId }, relations: ['following'] });
+
+    if (!userToSubscribe || !currentUser) {
+      return res.status(404).send('User not found');
+    }
+
+    if (currentUser.following.some(user => user.id === userIdToSubscribe)) {
+      return res.status(409).send('Already subscribed to this user');
+    }
+
+    currentUser.following.push(userToSubscribe);
+    await userRepository.save(currentUser);
+
+    res.status(200).send('Successfully subscribed');
+  });
+
+  // Unsubscribe from a user
+  router.delete('/:id/subscribe', authMiddleware, async (req, res) => {
+    const userIdToUnsubscribe = parseInt(req.params.id);
+    const currentUserId = req.user.id;
+
+    const currentUser = await userRepository.findOne({ where: { id: currentUserId }, relations: ['following'] });
+
+    if (!currentUser) {
+      return res.status(404).send('User not found');
+    }
+
+    currentUser.following = currentUser.following.filter(user => user.id !== userIdToUnsubscribe);
+    await userRepository.save(currentUser);
+
+    res.status(200).send('Successfully unsubscribed');
+  });
+
+  // Get subscriptions of a user
+  router.get('/:id/following', async (req, res) => {
+    const userId = parseInt(req.params.id);
+    const user = await userRepository.findOne({ where: { id: userId }, relations: ['following'] });
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    res.json(user.following.map(u => ({ id: u.id, username: u.username, avatarUrl: u.avatarUrl })));
+  });
+
+  // Get subscribers of a user
+  router.get('/:id/followers', async (req, res) => {
+    const userId = parseInt(req.params.id);
+    const user = await userRepository.findOne({ where: { id: userId }, relations: ['subscribers'] });
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    res.json(user.subscribers.map(u => ({ id: u.id, username: u.username, avatarUrl: u.avatarUrl })));
+  });
+
   return router;
 };

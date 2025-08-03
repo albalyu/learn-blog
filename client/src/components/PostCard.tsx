@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, Row, Col, Image, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import api from '../api';
 import ConfirmationModal from './ConfirmationModal';
+import type { IPost, ITag } from '../types';
 
-const PostCard = ({ post, currentUserId, onDeleteSuccess }) => {
+interface PostCardProps {
+  post: IPost;
+  currentUserId: number | null;
+  onDeleteSuccess: () => void;
+}
+
+const PostCard: React.FC<PostCardProps> = ({ post, currentUserId, onDeleteSuccess }) => {
   const { t } = useTranslation();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -45,7 +52,7 @@ const PostCard = ({ post, currentUserId, onDeleteSuccess }) => {
                 <Card.Text>{post.content.substring(0, 150)}...</Card.Text>
             {post.tags && post.tags.length > 0 && (
               <div className="mt-2">
-                {post.tags.map((tag) => (
+                {post.tags.map((tag: ITag) => (
                   <span key={tag.id} className="badge bg-info text-dark me-1">
                     {tag.name}
                   </span>
@@ -55,7 +62,7 @@ const PostCard = ({ post, currentUserId, onDeleteSuccess }) => {
               </div>
               {isAuthor && (
                 <div className="mt-auto text-end">
-                  <Button variant="warning" size="sm" className="me-2" as={Link} to={`/posts/${post.id}/edit`}>
+                  <Button variant="warning" size="sm" className="me-2" as={Link as any} to={`/posts/${post.id}/edit`}>
                     {t('postCard.edit')}
                   </Button>
                   <Button variant="danger" size="sm" onClick={handleDelete}>

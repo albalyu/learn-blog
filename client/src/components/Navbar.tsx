@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import api from '../api';
 
 const AppNavbar: React.FC = () => {
-  const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
-  const [userId, setUserId] = useState(null);
+  const [accessToken, setAccessToken] = useState<string | null>(localStorage.getItem('accessToken'));
+  const [userId, setUserId] = useState<number | null>(null);
   const { t } = useTranslation();
 
   useEffect(() => {

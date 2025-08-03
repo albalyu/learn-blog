@@ -8,15 +8,17 @@ import { toast } from 'react-toastify';
 const CreatePostPage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [tags, setTags] = useState(''); // New state for tags
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
     try {
       await api.post(
         '/api/posts',
-        { title, content }
+        { title, content, tags: tagsArray }
       );
       toast.success(t('createPostPage.successMessage'));
       navigate('/');
@@ -47,6 +49,18 @@ const CreatePostPage = () => {
             onChange={(e) => setContent(e.target.value)}
             required
           />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>{t('createPostPage.tags')}</Form.Label>
+          <Form.Control
+            type="text"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            placeholder={t('createPostPage.tagsPlaceholder')}
+          />
+          <Form.Text className="text-muted">
+            {t('createPostPage.tagsHint')}
+          </Form.Text>
         </Form.Group>
         <Button variant="primary" type="submit">
           {t('createPostPage.createButton')}

@@ -43,6 +43,15 @@ const PostCard = ({ post, currentUserId, onDeleteSuccess }) => {
                   <Link to={`/posts/${post.id}`}>{post.title}</Link>
                 </Card.Title>
                 <Card.Text>{post.content.substring(0, 150)}...</Card.Text>
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-2">
+                {post.tags.map((tag) => (
+                  <span key={tag.id} className="badge bg-info text-dark me-1">
+                    {tag.name}
+                  </span>
+                ))}
+              </div>
+            )}
               </div>
               {isAuthor && (
                 <div className="mt-auto text-end">

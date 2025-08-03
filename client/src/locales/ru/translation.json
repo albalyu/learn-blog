@@ -2,7 +2,9 @@
   "homePage": {
     "latestPosts": "Последние записи",
     "welcomeTitle": "Добро пожаловать в наш блог!",
-    "welcomeText": "Место, где мы делимся мыслями."
+    "welcomeText": "Место, где мы делимся мыслями.",
+    "filterByTag": "Фильтровать по тегу",
+    "filterTagPlaceholder": "Введите тег"
   },
   "createPostPage": {
     "createPost": "Создать новую запись",
@@ -10,7 +12,10 @@
     "content": "Содержание",
     "createButton": "Создать запись",
     "successMessage": "Запись успешно создана!",
-    "errorMessage": "Не удалось создать запись"
+    "errorMessage": "Не удалось создать запись",
+    "tags": "Теги",
+    "tagsPlaceholder": "Введите теги через запятую",
+    "tagsHint": "Разделяйте теги запятыми"
   },
   "loginPage": {
     "login": "Вход",
@@ -74,7 +79,10 @@
     "content": "Содержание",
     "saveChanges": "Сохранить изменения",
     "successMessage": "Запись успешно обновлена!",
-    "errorMessage": "Не удалось обновить запись"
+    "errorMessage": "Не удалось обновить запись",
+    "tags": "Теги",
+    "tagsPlaceholder": "Введите теги через запятую",
+    "tagsHint": "Разделяйте теги запятыми"
   },
   "common": {
     "cancel": "Отмена",

@@ -9,6 +9,7 @@ const EditPostPage = () => {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [tags, setTags] = useState(''); // New state for tags
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -18,6 +19,7 @@ const EditPostPage = () => {
         const { data } = await api.get(`/api/posts/${id}`);
         setTitle(data.title);
         setContent(data.content);
+        setTags(data.tags.map(tag => tag.name).join(', ')); // Set tags from fetched data
       } catch (error) {
         console.error('Не удалось загрузить запись для редактирования', error);
         toast.error('Не удалось загрузить запись для редактирования');
@@ -28,10 +30,11 @@ const EditPostPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
     try {
       await api.put(
         `/api/posts/${id}`,
-        { title, content }
+        { title, content, tags: tagsArray }
       );
       toast.success(t('editPostPage.successMessage'));
       window.dispatchEvent(new Event('postUpdated')); // Dispatch custom event
@@ -63,6 +66,18 @@ const EditPostPage = () => {
             onChange={(e) => setContent(e.target.value)}
             required
           />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>{t('editPostPage.tags')}</Form.Label>
+          <Form.Control
+            type="text"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            placeholder={t('editPostPage.tagsPlaceholder')}
+          />
+          <Form.Text className="text-muted">
+            {t('editPostPage.tagsHint')}
+          </Form.Text>
         </Form.Group>
         <Button variant="primary" type="submit">
           {t('editPostPage.saveChanges')}

@@ -78,6 +78,15 @@ const PostDetailsPage = ({ currentUserId }) => {
                   <h1>{post.title}</h1>
                   <p className="text-muted">{t('postDetailsPage.author')}: {post.author.username}</p>
                   <div>{post.content}</div>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="mt-3">
+                      {post.tags.map((tag) => (
+                        <span key={tag.id} className="badge bg-info text-dark me-1">
+                          {tag.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 {isAuthor && (
                   <div className="mt-auto text-end">

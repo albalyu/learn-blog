@@ -30,10 +30,10 @@ const main = async () => {
     const userRoutes = createUserRoutes(AppDataSource);
     const commentRoutes = createCommentRoutes(AppDataSource);
 
-    app.use('/api/auth', authRoutes);
-    app.use('/api/posts', postRoutes);
-    app.use('/api/users', userRoutes);
-    app.use('/api', commentRoutes); // Comments routes are nested under /api
+    app.use('/api', authRoutes);
+    app.use('/api', postRoutes);
+    app.use('/api', userRoutes);
+    app.use('/api', commentRoutes);
 
     app.get('/api', (req, res) => {
       res.json({ message: 'Backend is running!' });

@@ -55,7 +55,7 @@ export const createAuthRoutes = (dataSource: DataSource): Router => {
     }
 
     const accessToken = jwt.sign({ id: user.id, username: user.username }, 'your_jwt_secret', {
-      expiresIn: '15m',
+      expiresIn: '1h', // Access token expires in 1 hour
     });
 
     const refreshToken = crypto.randomBytes(64).toString('hex');

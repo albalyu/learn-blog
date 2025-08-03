@@ -4,6 +4,7 @@ import api from '../api';
 import { Container, Row, Col, Image, Button, Modal, Form } from 'react-bootstrap';
 import PostCard from '../components/PostCard';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const defaultAvatarPaths = [
   '/uploads/default-avatars/male-avatar-1.svg',
@@ -30,6 +31,7 @@ const ProfilePage: React.FC = () => {
       setProfile(data);
     } catch (error) {
       console.error(t('profilePage.fetchError'), error);
+      toast.error(t('profilePage.fetchError'));
     }
   };
 
@@ -38,17 +40,17 @@ const ProfilePage: React.FC = () => {
   }, [id]);
 
   const handleAvatarSelect = async (avatarUrl: string) => {
-    const accessToken = localStorage.getItem('accessToken');
     try {
       await api.put(
         '/api/users/avatar',
-        { avatarUrl },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
+        { avatarUrl }
       );
       setShowModal(false);
       fetchProfile(); // Refresh profile to show new avatar
+      toast.success(t('profilePage.updateSuccess'));
     } catch (error) {
       console.error(t('profilePage.updateError'), error);
+      toast.error(t('profilePage.updateError'));
     }
   };
 
@@ -62,13 +64,14 @@ const ProfilePage: React.FC = () => {
       const response = await api.post('/api/users/avatar/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${accessToken}`,
         },
       });
       setShowModal(false);
       fetchProfile();
+      toast.success(t('profilePage.uploadSuccess'));
     } catch (error) {
       console.error(t('profilePage.uploadError'), error);
+      toast.error(t('profilePage.uploadError'));
     }
   };
 

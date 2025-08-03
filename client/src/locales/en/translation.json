@@ -42,7 +42,9 @@
     "uploadOwn": "Or upload your own",
     "fetchError": "Failed to fetch profile",
     "updateError": "Failed to update avatar",
-    "uploadError": "Failed to upload avatar"
+    "uploadError": "Failed to upload avatar",
+    "updateSuccess": "Avatar updated successfully!",
+    "uploadSuccess": "Avatar uploaded successfully!"
   },
   "navbar": {
     "blog": "Blog",
@@ -62,7 +64,9 @@
     "unknown": "Unknown",
     "edit": "Edit",
     "delete": "Delete",
-    "confirmDelete": "Are you sure you want to delete this post?"
+    "confirmDelete": "Are you sure you want to delete this post?",
+    "deleteSuccess": "Post deleted successfully!",
+    "deleteError": "Failed to delete post"
   },
   "editPostPage": {
     "editPost": "Edit Post",
@@ -71,5 +75,9 @@
     "saveChanges": "Save Changes",
     "successMessage": "Post updated successfully!",
     "errorMessage": "Failed to update post"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   }
 }

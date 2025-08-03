@@ -74,5 +74,24 @@ export const createPostRoutes = (dataSource: DataSource): Router => {
     res.json(post);
   });
 
+  // Delete a post
+  router.delete('/:id', authMiddleware, async (req, res) => {
+    const postId = parseInt(req.params.id);
+    const userId = req.user.id;
+
+    const post = await postRepository.findOne({ where: { id: postId }, relations: ['author'] });
+
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+
+    if (post.author.id !== userId) {
+      return res.status(403).send('Forbidden: You are not the author of this post');
+    }
+
+    await postRepository.remove(post);
+    res.status(204).send(); // No content
+  });
+
   return router;
 };

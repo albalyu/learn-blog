@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -13,14 +14,14 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
+      const response = await api.post('/api/auth/login', { email, password });
       localStorage.setItem('accessToken', response.data.accessToken);
       localStorage.setItem('refreshToken', response.data.refreshToken);
       window.dispatchEvent(new Event("storage"));
-      alert(t('loginPage.successMessage'));
+      toast.success(t('loginPage.successMessage'));
       navigate('/');
     } catch (error) {
-      alert(t('loginPage.errorMessage'));
+      toast.error(t('loginPage.errorMessage'));
     }
   };
 

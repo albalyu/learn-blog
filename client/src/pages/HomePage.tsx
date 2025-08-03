@@ -8,11 +8,12 @@ const HomePage: React.FC = ({ currentUserId }) => {
   const [posts, setPosts] = useState([]);
   const { t } = useTranslation();
 
+  const fetchPosts = async () => {
+    const { data } = await api.get('/api/posts/public');
+    setPosts(data);
+  };
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      const { data } = await api.get('/api/posts/public');
-      setPosts(data);
-    };
     fetchPosts();
   }, []);
 
@@ -22,7 +23,7 @@ const HomePage: React.FC = ({ currentUserId }) => {
         <Col>
           <h1 className="my-4">{t('homePage.latestPosts')}</h1>
           {posts.map((post) => (
-            <PostCard key={post.id} post={post} currentUserId={currentUserId} />
+            <PostCard key={post.id} post={post} currentUserId={currentUserId} onDeleteSuccess={fetchPosts} />
           ))}
         </Col>
       </Row>

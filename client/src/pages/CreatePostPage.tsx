@@ -3,6 +3,7 @@ import api from '../api';
 import { Form, Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const CreatePostPage = () => {
   const [title, setTitle] = useState('');
@@ -17,10 +18,10 @@ const CreatePostPage = () => {
         '/api/posts',
         { title, content }
       );
-      alert(t('createPostPage.successMessage'));
+      toast.success(t('createPostPage.successMessage'));
       navigate('/');
     } catch (error) {
-      alert(t('createPostPage.errorMessage'));
+      toast.error(t('createPostPage.errorMessage'));
     }
   };
 

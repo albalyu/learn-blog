@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
-import { Form, Button, Container } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const EditPostPage = () => {
   const { id } = useParams();
@@ -19,7 +17,7 @@ const EditPostPage = () => {
         setContent(data.content);
       } catch (error) {
         console.error('Не удалось загрузить запись для редактирования', error);
-        alert('Не удалось загрузить запись для редактирования');
+        toast.error('Не удалось загрузить запись для редактирования');
       }
     };
     fetchPost();
@@ -32,10 +30,10 @@ const EditPostPage = () => {
         `/api/posts/${id}`,
         { title, content }
       );
-      alert(t('editPostPage.successMessage'));
+      toast.success(t('editPostPage.successMessage'));
       navigate(`/posts/${id}`);
     } catch (error) {
-      alert(t('editPostPage.errorMessage'));
+      toast.error(t('editPostPage.errorMessage'));
     }
   };
 

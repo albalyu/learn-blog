@@ -1,0 +1,64 @@
+{
+  "homePage": {
+    "latestPosts": "Latest Posts",
+    "welcomeTitle": "Welcome to our blog!",
+    "welcomeText": "A place where we share thoughts."
+  },
+  "createPostPage": {
+    "createPost": "Create New Post",
+    "title": "Title",
+    "content": "Content",
+    "createButton": "Create Post",
+    "successMessage": "Post created successfully!",
+    "errorMessage": "Failed to create post"
+  },
+  "loginPage": {
+    "login": "Login",
+    "emailAddress": "Email address",
+    "enterEmail": "Enter email",
+    "password": "Password",
+    "enterPassword": "Password",
+    "loginButton": "Login",
+    "successMessage": "Login successful!",
+    "errorMessage": "Login failed"
+  },
+  "registerPage": {
+    "register": "Register",
+    "username": "Username",
+    "enterUsername": "Enter username",
+    "emailAddress": "Email address",
+    "enterEmail": "Enter email",
+    "password": "Password",
+    "enterPassword": "Password",
+    "registerButton": "Register",
+    "successMessage": "Registration successful! Please log in.",
+    "errorMessage": "Registration failed"
+  },
+  "profilePage": {
+    "changeAvatar": "Change Avatar",
+    "postsBy": "Posts by",
+    "noPosts": "This user has no posts yet.",
+    "chooseAvatar": "Choose an Avatar",
+    "uploadOwn": "Or upload your own",
+    "fetchError": "Failed to fetch profile",
+    "updateError": "Failed to update avatar",
+    "uploadError": "Failed to upload avatar"
+  },
+  "navbar": {
+    "blog": "Blog",
+    "home": "Home",
+    "createPost": "Create Post",
+    "myProfile": "My Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "postDetailsPage": {
+    "loading": "Loading...",
+    "author": "By"
+  },
+  "postCard": {
+    "author": "By",
+    "unknown": "Unknown"
+  }
+}

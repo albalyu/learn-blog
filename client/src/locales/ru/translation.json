@@ -1,0 +1,64 @@
+{
+  "homePage": {
+    "latestPosts": "Последние записи",
+    "welcomeTitle": "Добро пожаловать в наш блог!",
+    "welcomeText": "Место, где мы делимся мыслями."
+  },
+  "createPostPage": {
+    "createPost": "Создать новую запись",
+    "title": "Заголовок",
+    "content": "Содержание",
+    "createButton": "Создать запись",
+    "successMessage": "Запись успешно создана!",
+    "errorMessage": "Не удалось создать запись"
+  },
+  "loginPage": {
+    "login": "Вход",
+    "emailAddress": "Адрес электронной почты",
+    "enterEmail": "Введите email",
+    "password": "Пароль",
+    "enterPassword": "Пароль",
+    "loginButton": "Войти",
+    "successMessage": "Вход выполнен успешно!",
+    "errorMessage": "Ошибка входа"
+  },
+  "registerPage": {
+    "register": "Регистрация",
+    "username": "Имя пользователя",
+    "enterUsername": "Введите имя пользователя",
+    "emailAddress": "Адрес электронной почты",
+    "enterEmail": "Введите email",
+    "password": "Пароль",
+    "enterPassword": "Пароль",
+    "registerButton": "Зарегистрироваться",
+    "successMessage": "Регистрация успешна! Пожалуйста, войдите.",
+    "errorMessage": "Ошибка регистрации"
+  },
+  "profilePage": {
+    "changeAvatar": "Сменить аватар",
+    "postsBy": "Записи пользователя",
+    "noPosts": "У этого пользователя пока нет записей.",
+    "chooseAvatar": "Выбрать аватар",
+    "uploadOwn": "Или загрузите свой",
+    "fetchError": "Не удалось получить профиль",
+    "updateError": "Не удалось обновить аватар",
+    "uploadError": "Не удалось загрузить аватар"
+  },
+  "navbar": {
+    "blog": "Блог",
+    "home": "Главная",
+    "createPost": "Создать запись",
+    "myProfile": "Мой профиль",
+    "logout": "Выйти",
+    "login": "Войти",
+    "register": "Регистрация"
+  },
+  "postDetailsPage": {
+    "loading": "Загрузка...",
+    "author": "Автор"
+  },
+  "postCard": {
+    "author": "Автор",
+    "unknown": "Неизвестно"
+  }
+}

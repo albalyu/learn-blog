@@ -20,9 +20,9 @@ export class Post {
   @ManyToOne(() => User, (user) => user.posts)
   author!: User;
 
-  @OneToMany(() => Comment, (comment) => comment.post)
+  @OneToMany(() => Comment, (comment) => comment.post, { onDelete: 'CASCADE' })
   comments!: Comment[];
 
-  @ManyToMany(() => Tag, (tag) => tag.posts)
+  @ManyToMany(() => Tag, (tag) => tag.posts, { cascade: true })
   tags!: Tag[];
 }

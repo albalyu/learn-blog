@@ -1,16 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Post } from './Post';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ unique: true })
+  @Column('varchar', { unique: true })
   username!: string;
 
-  @Column({ unique: true })
+  @Column('varchar', { unique: true })
   email!: string;
 
-  @Column()
+  @Column('varchar')
   passwordHash!: string;
+
+  @Column('varchar', { default: '/uploads/default-avatars/male-avatar-1.svg' })
+  avatarUrl!: string;
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts!: Post[];
 }

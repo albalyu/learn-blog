@@ -4,7 +4,12 @@
     "welcomeTitle": "Добро пожаловать в наш блог!",
     "welcomeText": "Место, где мы делимся мыслями.",
     "filterByTag": "Фильтровать по тегу",
-    "filterTagPlaceholder": "Введите тег"
+    "filterTagPlaceholder": "Введите тег",
+    "allPosts": "Все записи",
+    "followingPosts": "Подписки",
+    "postsFromFollowing": "Записи от подписок",
+    "noPosts": "Пока нет записей.",
+    "noFollowingPosts": "Нет записей от подписок."
   },
   "createPostPage": {
     "createPost": "Создать новую запись",
@@ -49,7 +54,20 @@
     "updateError": "Не удалось обновить аватар",
     "uploadError": "Не удалось загрузить аватар",
     "updateSuccess": "Аватар успешно обновлен!",
-    "uploadSuccess": "Аватар успешно загружен!"
+    "uploadSuccess": "Аватар успешно загружен!",
+    "subscribe": "Подписаться",
+    "unsubscribe": "Отписаться",
+    "subscribeSuccess": "Вы успешно подписались!",
+    "subscribeError": "Не удалось подписаться.",
+    "unsubscribeSuccess": "Вы успешно отписались!",
+    "unsubscribeError": "Не удалось отписаться.",
+    "following": "Подписки",
+    "followers": "Подписчики",
+    "followingList": "Список подписок",
+    "followersList": "Список подписчиков",
+    "noFollowing": "Нет подписок.",
+    "noFollowers": "Нет подписчиков.",
+    "posts": "Записи"
   },
   "navbar": {
     "blog": "Блог",

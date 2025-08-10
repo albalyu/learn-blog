@@ -8,20 +8,25 @@ import { toast } from 'react-toastify';
 import ConfirmationModal from '../components/ConfirmationModal';
 import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
+import type { IPost, IComment } from '../types';
 
-const PostDetailsPage = ({ currentUserId }) => {
+interface PostDetailsPageProps {
+  currentUserId: number | null;
+}
+
+const PostDetailsPage: React.FC<PostDetailsPageProps> = ({ currentUserId }) => {
   const { id } = useParams();
-  const [post, setPost] = useState(null);
-  const [comments, setComments] = useState([]);
+  const [post, setPost] = useState<IPost | null>(null);
+  const [comments, setComments] = useState<IComment[]>([]);
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const fetchPostAndComments = async () => {
     try {
-      const { data: postData } = await api.get(`/api/posts/${id}`);
+      const { data: postData } = await api.get<IPost>(`/api/posts/${id}`);
       setPost(postData);
-      const { data: commentsData } = await api.get(`/api/posts/${id}/comments`);
+      const { data: commentsData } = await api.get<IComment[]>(`/api/posts/${id}/comments`);
       setComments(commentsData);
     } catch (error) {
       console.error('Failed to fetch post or comments', error);
@@ -33,7 +38,7 @@ const PostDetailsPage = ({ currentUserId }) => {
     fetchPostAndComments();
   }, [id]);
 
-  const isAuthor = currentUserId === post?.author?.id;
+  const isAuthor = post && currentUserId === post.author.id;
 
   const handleDelete = () => {
     setShowConfirmModal(true);
@@ -42,9 +47,11 @@ const PostDetailsPage = ({ currentUserId }) => {
   const handleConfirmDelete = async () => {
     setShowConfirmModal(false);
     try {
-      await api.delete(`/api/posts/${post.id}`);
-      toast.success(t('postCard.deleteSuccess'));
-      navigate('/'); // Redirect to home page after deletion
+      if (post) {
+        await api.delete(`/api/posts/${post.id}`);
+        toast.success(t('postCard.deleteSuccess'));
+        navigate('/'); // Redirect to home page after deletion
+      }
     } catch (error) {
       toast.error(t('postCard.deleteError'));
     }
@@ -90,7 +97,7 @@ const PostDetailsPage = ({ currentUserId }) => {
                 </div>
                 {isAuthor && (
                   <div className="mt-auto text-end">
-                    <Button variant="warning" size="sm" className="me-2" as={Link} to={`/posts/${post.id}/edit`}>
+                    <Button variant="warning" size="sm" className="me-2" as={Link as any} to={`/posts/${post.id}/edit`}>
                       {t('postCard.edit')}
                     </Button>
                     <Button variant="danger" size="sm" onClick={handleDelete}>

@@ -1,10 +1,14 @@
-import React from 'react';
 import Comment from './Comment';
+import type { IComment } from '../types';
 
-const CommentList = ({ comments }) => {
+interface CommentListProps {
+  comments: IComment[];
+}
+
+const CommentList: React.FC<CommentListProps> = ({ comments }) => {
   return (
     <div>
-      {comments.map((comment) => (
+      {comments.map((comment: IComment) => (
         <Comment key={comment.id} comment={comment} />
       ))}
     </div>

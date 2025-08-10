@@ -1,8 +1,12 @@
-import React from 'react';
 import { Image } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import type { IComment } from '../types';
 
-const Comment = ({ comment }) => {
+interface CommentProps {
+  comment: IComment;
+}
+
+const Comment: React.FC<CommentProps> = ({ comment }) => {
   const { t } = useTranslation();
 
   return (
